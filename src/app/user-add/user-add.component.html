@@ -1,0 +1,10 @@
+<h2>Add new user</h2>
+<div>
+    <label>First name:</label><br>
+    <input [(ngModel)]="userData.firstName" placeholder="First name" /><br>
+    <label>Last name:</label><br>
+    <input [(ngModel)]="userData.lastName" placeholder="Last name"/><br>
+    <label>Email:</label><br>
+    <input [(ngModel)]="userData.email" placeholder="Email"/><br>
+</div>
+<button (click)="addUser()">Lägg till</button>

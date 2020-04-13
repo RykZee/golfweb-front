@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
-
-const endpoint = 'http://localhost:8080/userapi/users/';
+import { RestService } from './rest.service';
+import { ActivatedRoute, Router } from '@angular/router';
+import { Route } from '@angular/compiler/src/core';
 
 @Component({
   selector: 'app-root',
@@ -14,29 +14,38 @@ export class AppComponent {
   allUsers: any;
   user: any;
 
-  constructor(private http: HttpClient) {
+  constructor(public rest: RestService, private route: ActivatedRoute, private router: Router) {
 
   }
 
   ngOnInit() {
-    this.http.get(endpoint)
-      .subscribe((response) => {
-        this.allUsers = response;
-      });
+    this.getAllUsers();
+  }
+
+  getAllUsers() {
+    this.rest.getUsers().subscribe((data: {}) => {
+      this.allUsers = data;
+    });
+  }
+
+  add() {
+    this.router.navigate(['/user-add']);
   }
 
   details(id: number) {
-    this.http.get(endpoint + id)
-      .subscribe((response) => {
-        console.log(response);
-      });
+    this.router.navigate(['/user-details', id]);
   }
 
   edit(id: number) {
-
+    this.router.navigate(['/user-edit', id]);
   }
 
   delete(id: number) {
-
+    this.rest.deleteUser(id)
+      .subscribe(res => {
+        this.getAllUsers();
+      }, (err) => {
+        console.log(err);
+      });
   }
 }
